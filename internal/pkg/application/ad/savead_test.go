@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
-	"time"
 )
 
 func TestSaveAd_Execute_Success(t *testing.T) {
@@ -20,7 +19,7 @@ func TestSaveAd_Execute_Success(t *testing.T) {
 		Description: "Description to save successfully an ad",
 		Price:       99.99,
 	}
-	savedAd := NewAd(Title(requestAd.Title), Description(requestAd.Description), Price(requestAd.Price), time.Now())
+	savedAd := NewAd(Title(requestAd.Title), Description(requestAd.Description), Price(requestAd.Price))
 	savedAd.Id = "test-id"
 	ads.EXPECT().SaveAd(mock.AnythingOfType("*context.emptyCtx"), mock.AnythingOfType("Ad")).Return(savedAd, nil)
 

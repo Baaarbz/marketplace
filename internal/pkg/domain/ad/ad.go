@@ -13,11 +13,11 @@ type Ad struct {
 	Date        time.Time
 }
 
-func NewAd(title Title, description Description, price Price, date time.Time) Ad {
+func NewAd(title Title, description Description, price Price) Ad {
 	return Ad{
 		Title:       title,
 		Description: description,
 		Price:       price,
-		Date:        date,
+		Date:        time.Now(),
 	}
 }

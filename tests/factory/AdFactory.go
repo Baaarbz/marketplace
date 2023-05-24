@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/brianvoe/gofakeit"
-	"time"
 )
 
 func AJSONSaveAdRequest() (objectRequest ad.JSONSaveAdRequest, jsonRequest []byte) {
@@ -28,5 +27,5 @@ func AnAd() domain.Ad {
 	description, _ := valueobject.NewDescription("Fake description for the ad of the car")
 	price, _ := valueobject.NewPrice(float32(gofakeit.Price(1000, 100000)))
 
-	return domain.NewAd(title, description, price, time.Now())
+	return domain.NewAd(title, description, price)
 }

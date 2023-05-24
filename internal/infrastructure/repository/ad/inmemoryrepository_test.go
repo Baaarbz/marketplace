@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"time"
 )
 
 func TestInMemoryRepository_FindAdById(t *testing.T) {
@@ -75,7 +74,7 @@ func TestInMemoryRepository_FindAllAds(t *testing.T) {
 }
 
 func TestInMemoryRepository_SaveAd(t *testing.T) {
-	anAd := NewAd("Test Save", "Test save Ad description mock", 10, time.Now())
+	anAd := NewAd("Test Save", "Test save Ad description mock", 10)
 	repository := &InMemoryRepository{ads: []Ad{}}
 
 	expectedAd, err := repository.SaveAd(context.Background(), anAd)
@@ -87,17 +86,17 @@ func TestInMemoryRepository_SaveAd(t *testing.T) {
 
 func generateSliceMockAds() (mockAds []Ad) {
 	mockAds = make([]Ad, 0)
-	mockAds = append(mockAds, NewAd("Sample Ad", "This is the description to test the app", 30, time.Now()))
-	mockAds = append(mockAds, NewAd("TV 45' Sony", "This is the description to test the app", 599.99, time.Now()))
-	mockAds = append(mockAds, NewAd("Sportiva Rock Climbing Foot", "This is the description to test the app", 70, time.Now()))
-	mockAds = append(mockAds, NewAd("Macbook Pro 16'", "This is the description to test the app", 1799.00, time.Now()))
-	mockAds = append(mockAds, NewAd("Rolex limited edition", "This is the description to test the app", 100500, time.Now()))
-	mockAds = append(mockAds, NewAd("Northface t-shirt", "This is the description to test the app", 55, time.Now()))
+	mockAds = append(mockAds, NewAd("Sample Ad", "This is the description to test the app", 30))
+	mockAds = append(mockAds, NewAd("TV 45' Sony", "This is the description to test the app", 599.99))
+	mockAds = append(mockAds, NewAd("Sportiva Rock Climbing Foot", "This is the description to test the app", 70))
+	mockAds = append(mockAds, NewAd("Macbook Pro 16'", "This is the description to test the app", 1799.00))
+	mockAds = append(mockAds, NewAd("Rolex limited edition", "This is the description to test the app", 100500))
+	mockAds = append(mockAds, NewAd("Northface t-shirt", "This is the description to test the app", 55))
 
 	return
 }
 func mockAdWithId(anId AdId) Ad {
-	adWithId := NewAd("BMW 320D", "This is the description to test the app", 18500, time.Now())
+	adWithId := NewAd("BMW 320D", "This is the description to test the app", 18500)
 	adWithId.Id = anId
 
 	return adWithId

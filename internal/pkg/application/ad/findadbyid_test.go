@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
-	"time"
 )
 
 func TestFindAdById_Execute_FindAd(t *testing.T) {
@@ -17,7 +16,7 @@ func TestFindAdById_Execute_FindAd(t *testing.T) {
 	service := NewFindAdById(ads)
 
 	anId, _ := NewId("574cc928-f4bd-11ed-ad0e-8a6a68a798d6")
-	ad := NewAd("Simple title", "Simple ad description for testing", 20, time.Now())
+	ad := NewAd("Simple title", "Simple ad description for testing", 20)
 	ad.Id = anId
 	expectedResponse := GetAdByIdDto{
 		Id:          anId.String(),

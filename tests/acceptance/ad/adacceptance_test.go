@@ -6,11 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
-	"os/exec"
-	"os/signal"
-	"syscall"
 	"testing"
 	"time"
 )
@@ -22,10 +18,8 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	initDocker()
 	_, srv = server.New(context.Background(), "localhost", 8080, 10*time.Second, dependencies)
 	exitCode := m.Run()
-	stopDocker()
 	os.Exit(exitCode)
 }
 func initDatabase() (*sql.DB, error) {
@@ -46,27 +40,4 @@ func initDatabase() (*sql.DB, error) {
 	}
 
 	return db, err
-}
-
-func initDocker() {
-	cmd := exec.Command("docker-compose", "-p", "marketplace-acceptance-test", "up")
-
-	// Channel to receive interrupt signal
-	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
-
-	// Exec docker compose in a gorutine
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func stopDocker() {
-	cmd := exec.Command("docker-compose", "down", "-d")
-
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
 }

@@ -5,7 +5,6 @@ import (
 	. "barbz.dev/marketplace/internal/pkg/domain/ad"
 	. "barbz.dev/marketplace/pkg/valueobject"
 	"context"
-	"time"
 )
 
 type SaveAd interface {
@@ -36,7 +35,7 @@ func (service saveAd) Execute(ctx context.Context, request SaveAdDtoRequest) (Sa
 	if title, description, price, err := service.getFieldsAds(request); err != nil {
 		return SaveAdDtoResponse{}, err
 	} else {
-		ad := NewAd(title, description, price, time.Now())
+		ad := NewAd(title, description, price)
 		ad, err = service.ads.SaveAd(ctx, ad)
 		return SaveAdDtoResponse{Id: ad.Id.String()}, err
 	}
