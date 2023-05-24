@@ -44,7 +44,7 @@ func Run() error {
 		return err
 	}
 
-	adConfiguration, err := configuration.BuildAdConfiguration()
+	adConfiguration, err := configuration.BuildAdConfiguration(db, cfg.ShutdownTimeout)
 	if err != nil {
 		return err
 	}
