@@ -79,7 +79,7 @@ func TestInMemoryRepository_SaveAd(t *testing.T) {
 
 	expectedAd, err := repository.SaveAd(context.Background(), anAd)
 
-	gotAd, _ := repository.FindAdById(context.Background(), expectedAd.GetId())
+	gotAd, _ := repository.FindAdById(context.Background(), expectedAd.Id)
 	assert.Equal(t, expectedAd, gotAd)
 	assert.Nil(t, err)
 }
@@ -97,7 +97,7 @@ func generateSliceMockAds() (mockAds []Ad) {
 }
 func mockAdWithId(anId AdId) Ad {
 	adWithId := NewAd("BMW 320D", "This is the description to test the app", 18500)
-	adWithId.SetId(anId)
+	adWithId.Id = anId
 
 	return adWithId
 }

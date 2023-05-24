@@ -10,7 +10,7 @@ type Ad struct {
 	Title       Title
 	Description Description
 	Price       Price
-	Date        Date
+	Date        time.Time
 }
 
 func NewAd(title Title, description Description, price Price) Ad {
@@ -18,6 +18,6 @@ func NewAd(title Title, description Description, price Price) Ad {
 		Title:       title,
 		Description: description,
 		Price:       price,
-		Date:        NewDate(time.Now()),
+		Date:        time.Now(),
 	}
 }
