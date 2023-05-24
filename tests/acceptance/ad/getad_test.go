@@ -25,8 +25,8 @@ func TestFindAllAds(t *testing.T) {
 
 	assert.Equal(t, 200, w.Code)
 	assert.True(t, len(response) == 2)
-	assert.Contains(t, response, ad.JSONFindAllAdsResponse{Id: ad1.GetId().String()})
-	assert.Contains(t, response, ad.JSONFindAllAdsResponse{Id: ad2.GetId().String()})
+	assert.Contains(t, response, ad.JSONFindAllAdsResponse{Id: ad1.Id.String()})
+	assert.Contains(t, response, ad.JSONFindAllAdsResponse{Id: ad2.Id.String()})
 }
 
 func TestFindAdById(t *testing.T) {
@@ -35,16 +35,16 @@ func TestFindAdById(t *testing.T) {
 
 	var response ad.JSONFindAdByIdResponse
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest(http.MethodGet, "/api/v1/ads/"+adInput.GetId().String(), nil)
+	req, _ := http.NewRequest(http.MethodGet, "/api/v1/ads/"+adInput.Id.String(), nil)
 	srv.Engine.ServeHTTP(w, req)
 	json.Unmarshal(w.Body.Bytes(), &response)
 
 	assert.Equal(t, 200, w.Code)
 	assert.Equal(t, response, ad.JSONFindAdByIdResponse{
-		Id:          adInput.GetId().String(),
+		Id:          adInput.Id.String(),
 		Title:       adInput.Title.String(),
 		Description: adInput.Description.String(),
 		Price:       adInput.Price.Number(),
-		Date:        adInput.GetDate().String(),
+		Date:        adInput.Date.String(),
 	})
 }

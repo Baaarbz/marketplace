@@ -27,6 +27,6 @@ func TestSaveAd(t *testing.T) {
 	assert.Equal(t, objectRequest.Description, result.Description.String())
 	assert.Equal(t, objectRequest.Title, result.Title.String())
 	assert.Equal(t, objectRequest.Price, result.Price.Number())
-	assert.NotNil(t, result.GetDate())
-	assert.NotNil(t, result.GetId())
+	assert.NotNil(t, result.Date)
+	assert.NotNil(t, result.Id)
 }
