@@ -1,2 +1,2 @@
-GET /api/v1/ads/bf30e7a8-fa04-11ed-b8e1-8a6a68a798d8HTTP/1.1
-Host: localhost:8000
+GET /api/v1/ads/{{adId}} HTTP/1.1
+Host: {{host}}
