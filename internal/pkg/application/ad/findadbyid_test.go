@@ -41,6 +41,6 @@ func TestFindAdById_Execute_NotFound(t *testing.T) {
 
 	gotAd, err := service.Execute(context.Background(), anId.String())
 
-	assert.Empty(t, gotAd)
+	assert.Empty(t, gotAd.Id)
 	assert.NotNil(t, err)
 }
