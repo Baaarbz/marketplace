@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
+	"time"
 )
 
 func TestFindAllAds_Execute_GetListOfAds(t *testing.T) {
@@ -15,7 +16,7 @@ func TestFindAllAds_Execute_GetListOfAds(t *testing.T) {
 	service := NewFindAllAds(ads)
 
 	anId, _ := valueobject.NewId("574cc928-f4bd-11ed-ad0e-8a6a68a798d6")
-	ad := NewAd("Simple title", "Simple ad description for testing", 20)
+	ad := NewAd("Simple title", "Simple ad description for testing", 20, time.Now())
 	ad.Id = anId
 	ads.EXPECT().FindAllAds(mock.AnythingOfType("*context.emptyCtx")).Return([]Ad{ad}, nil)
 
