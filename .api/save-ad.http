@@ -1,0 +1,9 @@
+POST /api/v1/ads HTTP/1.1
+Host: localhost:8000
+Content-Type: application/json
+
+{
+  "title": "Macbook Pro 16'",
+  "description": "Do you need a new laptop? This is your opportunity",
+  "price": 1499.99
+}
