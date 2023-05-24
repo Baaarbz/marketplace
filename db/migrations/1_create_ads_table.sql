@@ -8,7 +8,8 @@ create table ads
         constraint ads_pk primary key,
     title       varchar not null,
     description text    not null,
-    price       float   not null
+    price       float   not null,
+    postedAt    date    not null
 );
 -- +goose Down
 -- +goose StatementBegin
