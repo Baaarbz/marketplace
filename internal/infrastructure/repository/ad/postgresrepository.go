@@ -11,6 +11,7 @@ import (
 )
 
 const queryInsertAd = "INSERT INTO ads (id, title, description, price, postedat) VALUES ($1, $2, $3, $4, $5)"
+const queryFindAdById = "SELECT id, title, description, price, postedat FROM ads WHERE id = $1"
 
 type PostgresRepository struct {
 	db        *sql.DB
@@ -27,19 +28,19 @@ func NewPostgresRepository(db *sql.DB, dbTimeout time.Duration) AdRepository {
 func (repository *PostgresRepository) SaveAd(_ context.Context, ad Ad) (Ad, error) {
 	var id, _ = uuid.NewUUID()
 	var adId, _ = NewId(id.String())
-	ad.SetId(adId)
+	ad.Id = adId
 
-	_, err := repository.db.Exec(queryInsertAd, ad.GetId().String(), ad.Title, ad.Description, fmt.Sprintf("%.2f", ad.Price), ad.GetDate())
+	_, err := repository.db.Exec(queryInsertAd, ad.Id, ad.Title, ad.Description, fmt.Sprintf("%.2f", ad.Price), ad.Date)
 	return ad, err
 }
 
 func (repository *PostgresRepository) FindAdById(_ context.Context, id AdId) (Ad, error) {
-	//for _, ad := range repository.ads {
-	//	if ad.GetId() == id {
-	//		return ad, nil
-	//	}
-	//}
-	return Ad{}, nil
+	row := repository.db.QueryRow(queryFindAdById, id)
+
+	ad := Ad{}
+	err := row.Scan(&ad.Id, &ad.Title, &ad.Description, &ad.Price, &ad.Date)
+
+	return ad, err
 }
 
 func (repository *PostgresRepository) FindAllAds(_ context.Context) (adResponse []Ad, err error) {

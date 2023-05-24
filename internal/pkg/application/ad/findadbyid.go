@@ -40,10 +40,10 @@ func (service findAdById) Execute(ctx context.Context, id string) (response GetA
 
 func (findAdById) mapToResponse(ad Ad) GetAdByIdDto {
 	return GetAdByIdDto{
-		Id:          ad.GetId().String(),
+		Id:          ad.Id.String(),
 		Title:       ad.Title.String(),
 		Description: ad.Description.String(),
 		Price:       ad.Price.Number(),
-		Date:        ad.GetDate().String(),
+		Date:        ad.Date.String(),
 	}
 }

@@ -6,11 +6,11 @@ import (
 )
 
 type Ad struct {
-	id          AdId
+	Id          AdId
 	Title       Title
 	Description Description
 	Price       Price
-	date        Date
+	Date        Date
 }
 
 func NewAd(title Title, description Description, price Price) Ad {
@@ -18,18 +18,6 @@ func NewAd(title Title, description Description, price Price) Ad {
 		Title:       title,
 		Description: description,
 		Price:       price,
-		date:        NewDate(time.Now()),
+		Date:        NewDate(time.Now()),
 	}
-}
-
-func (ad *Ad) GetId() AdId {
-	return ad.id
-}
-
-func (ad *Ad) SetId(id AdId) {
-	ad.id = id
-}
-
-func (ad *Ad) GetDate() Date {
-	return ad.date
 }
