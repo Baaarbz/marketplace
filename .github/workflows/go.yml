@@ -34,24 +34,8 @@ jobs:
     - name: Install mockery
       run: go install github.com/vektra/mockery/v2@v2.20.0
 
-    - name: Unit test
+    - name: Run unit test
       run: make unit-test
-
-  acceptance-tests:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.19
-
-    - name: Install mockery
-      run: go install github.com/vektra/mockery/v2@v2.20.0
-
-    - name: Acceptance test
-      run: make acceptance-test
 
   contract-tests:
     runs-on: ubuntu-latest
@@ -66,5 +50,18 @@ jobs:
     - name: Install mockery
       run: go install github.com/vektra/mockery/v2@v2.20.0
 
-    - name: Contract test
+    - name: Run contract test
       run: make contract-test
+
+  acceptance-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+
+      - name: Run acceptance test
+        run: make acceptance-test
