@@ -5,6 +5,7 @@ import (
 	. "barbz.dev/marketplace/pkg/valueobject"
 	"context"
 	"database/sql"
+	"fmt"
 	"github.com/google/uuid"
 	"time"
 )
@@ -28,7 +29,7 @@ func (repository *PostgresRepository) SaveAd(_ context.Context, ad Ad) (Ad, erro
 	var adId, _ = NewId(id.String())
 	ad.SetId(adId)
 
-	_, err := repository.db.Exec(queryInsertAd, ad.GetId().String(), ad.Title, ad.Description, ad.Price, ad.GetDate())
+	_, err := repository.db.Exec(queryInsertAd, ad.GetId().String(), ad.Title, ad.Description, fmt.Sprintf("%.2f", ad.Price), ad.GetDate())
 	return ad, err
 }
 
