@@ -12,6 +12,7 @@ import (
 
 const queryInsertAd = "INSERT INTO ads (id, title, description, price, postedat) VALUES ($1, $2, $3, $4, $5)"
 const queryFindAdById = "SELECT id, title, description, price, postedat FROM ads WHERE id = $1"
+const queryFindAllAds = "SELECT id FROM ads"
 
 type PostgresRepository struct {
 	db        *sql.DB
@@ -43,11 +44,24 @@ func (repository *PostgresRepository) FindAdById(_ context.Context, id AdId) (Ad
 	return ad, err
 }
 
-func (repository *PostgresRepository) FindAllAds(_ context.Context) (adResponse []Ad, err error) {
-	//if len(repository.ads) < 5 {
-	//	adResponse = repository.ads
-	//} else {
-	//	adResponse = repository.ads[:5]
-	//}
+func (repository *PostgresRepository) FindAllAds(_ context.Context) (adsResponse []Ad, err error) {
+	rows, err := repository.db.Query(queryFindAllAds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id string
+		if err = rows.Scan(&id); err != nil {
+			return nil, err
+		}
+		adsResponse = append(adsResponse, Ad{Id: AdId(id)})
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return
 }
