@@ -9,7 +9,7 @@ create table ads
     title       varchar not null,
     description text    not null,
     price       float   not null,
-    postedAt    date    not null
+    postedAt    timestamp    not null
 );
 -- +goose Down
 -- +goose StatementBegin
