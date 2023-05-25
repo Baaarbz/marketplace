@@ -32,7 +32,7 @@ func (service findAllAds) Execute(ctx context.Context) ([]GetAdsDto, error) {
 func (findAllAds) mapToResponse(ads []Ad) []GetAdsDto {
 	adsResponse := make([]GetAdsDto, 0)
 	for _, ad := range ads {
-		adsResponse = append(adsResponse, GetAdsDto{Id: ad.GetId().String()})
+		adsResponse = append(adsResponse, GetAdsDto{Id: ad.Id.String()})
 	}
 	return adsResponse
 }

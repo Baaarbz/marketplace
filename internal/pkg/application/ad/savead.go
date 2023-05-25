@@ -37,7 +37,7 @@ func (service saveAd) Execute(ctx context.Context, request SaveAdDtoRequest) (Sa
 	} else {
 		ad := NewAd(title, description, price)
 		ad, err = service.ads.SaveAd(ctx, ad)
-		return SaveAdDtoResponse{Id: ad.GetId().String()}, err
+		return SaveAdDtoResponse{Id: ad.Id.String()}, err
 	}
 }
 

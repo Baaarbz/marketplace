@@ -4,7 +4,9 @@ import (
 	repository "barbz.dev/marketplace/internal/infrastructure/repository/ad"
 	service "barbz.dev/marketplace/internal/pkg/application/ad"
 	domain "barbz.dev/marketplace/internal/pkg/domain/ad"
+	"database/sql"
 	"go.uber.org/dig"
+	"time"
 )
 
 type AdConfiguration struct {
@@ -14,8 +16,8 @@ type AdConfiguration struct {
 	FindAdByIdService service.FindAdById
 }
 
-func BuildAdConfiguration() (*AdConfiguration, error) {
-	container, err := buildContainer()
+func BuildAdConfiguration(db *sql.DB, dbTimeout time.Duration) (*AdConfiguration, error) {
+	container, err := buildContainer(db, dbTimeout)
 	if err != nil {
 		return nil, err
 	}
@@ -38,9 +40,11 @@ func BuildAdConfiguration() (*AdConfiguration, error) {
 	return dependencies, nil
 }
 
-func buildContainer() (*dig.Container, error) {
+func buildContainer(db *sql.DB, dbTimeout time.Duration) (*dig.Container, error) {
 	container := dig.New()
-	if err := container.Provide(repository.NewInMemoryRepository); err != nil {
+	if err := container.Provide(func() domain.AdRepository {
+		return repository.NewPostgresRepository(db, dbTimeout)
+	}); err != nil {
 		return nil, err
 	}
 

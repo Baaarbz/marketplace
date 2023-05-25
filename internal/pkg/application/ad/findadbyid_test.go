@@ -17,13 +17,13 @@ func TestFindAdById_Execute_FindAd(t *testing.T) {
 
 	anId, _ := NewId("574cc928-f4bd-11ed-ad0e-8a6a68a798d6")
 	ad := NewAd("Simple title", "Simple ad description for testing", 20)
-	ad.SetId(anId)
+	ad.Id = anId
 	expectedResponse := GetAdByIdDto{
 		Id:          anId.String(),
 		Title:       ad.Title.String(),
 		Description: ad.Description.String(),
 		Price:       ad.Price.Number(),
-		Date:        ad.GetDate().String(),
+		Date:        ad.Date.String(),
 	}
 	ads.EXPECT().FindAdById(mock.AnythingOfType("*context.emptyCtx"), anId).Return(ad, nil)
 
@@ -41,6 +41,6 @@ func TestFindAdById_Execute_NotFound(t *testing.T) {
 
 	gotAd, err := service.Execute(context.Background(), anId.String())
 
-	assert.Empty(t, gotAd)
+	assert.Empty(t, gotAd.Id)
 	assert.NotNil(t, err)
 }

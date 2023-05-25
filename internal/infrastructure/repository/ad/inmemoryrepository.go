@@ -20,7 +20,7 @@ func NewInMemoryRepository() AdRepository {
 func (repository *InMemoryRepository) SaveAd(_ context.Context, ad Ad) (Ad, error) {
 	var id, _ = uuid.NewUUID()
 	var adId, _ = NewId(id.String())
-	ad.SetId(adId)
+	ad.Id = adId
 
 	repository.ads = append(repository.ads, ad)
 	return ad, nil
@@ -28,7 +28,7 @@ func (repository *InMemoryRepository) SaveAd(_ context.Context, ad Ad) (Ad, erro
 
 func (repository *InMemoryRepository) FindAdById(_ context.Context, id AdId) (Ad, error) {
 	for _, ad := range repository.ads {
-		if ad.GetId() == id {
+		if ad.Id == id {
 			return ad, nil
 		}
 	}
