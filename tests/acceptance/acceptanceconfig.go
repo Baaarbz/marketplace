@@ -20,8 +20,6 @@ const (
 	DbUser     = "acceptancetest"
 	DbPassword = "pwd"
 	DbPort     = "5431"
-	apiPort    = "9999"
-	BasePath   = "localhost" + apiPort
 )
 
 var (
@@ -57,7 +55,6 @@ func InitAcceptanceTest() {
 }
 
 func setEnvVariables() {
-	os.Setenv("MARKETPLACE_PORT", apiPort)
 	os.Setenv("MARKETPLACE_DBUSER", DbUser)
 	os.Setenv("MARKETPLACE_DBPORT", DbPort)
 	os.Setenv("MARKETPLACE_DBPASS", DbPassword)
