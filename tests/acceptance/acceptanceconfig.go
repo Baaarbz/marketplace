@@ -1,17 +1,18 @@
 package acceptance
 
 import (
-	"barbz.dev/marketplace/cmd/marketplace/bootstrap"
 	"barbz.dev/marketplace/internal/infrastructure/server"
-	"barbz.dev/marketplace/internal/pkg/domain/ad"
+	"barbz.dev/marketplace/internal/infrastructure/server/configuration"
 	"context"
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
+	"github.com/pressly/goose"
 	"log"
 	"os"
+	"time"
 )
 
 const (
@@ -24,22 +25,31 @@ const (
 )
 
 var (
-	db       *sql.DB
+	Db       *sql.DB
 	pool     *dockertest.Pool
 	resource *dockertest.Resource
 
-	Server *server.Server
+	Srv          server.Server
+	Dependencies *configuration.AdConfiguration
 )
 
-// TODO
 func InitAcceptanceTest() {
+	setEnvVariables()
+
 	err := initDocker()
 	if err != nil {
 		stopDocker()
 		log.Fatalf("something goes wrong :( %s", err)
 	}
-	setEnvVariables()
-	err = bootstrap.Run()
+
+	err = setUpDatabase()
+	if err != nil {
+		stopDocker()
+		log.Fatalf("something goes wrong :( %s", err)
+	}
+	Dependencies, _ = configuration.BuildAdConfiguration(Db, 10*time.Second)
+	_, Srv = server.New(context.Background(), "localhost", 8080, 10*time.Second, Dependencies)
+
 	if err != nil {
 		stopDocker()
 		log.Fatalf("something goes wrong :( %s", err)
@@ -89,7 +99,7 @@ func initDocker() (err error) {
 	}
 
 	if err = pool.Retry(func() error {
-		db, err = initDatabase()
+		Db, err = initDatabase()
 		if err != nil {
 			log.Println("Database not ready yet (it is booting up, wait for a few tries)...")
 			return err
@@ -129,15 +139,10 @@ func initDatabase() (*sql.DB, error) {
 	return postgresDb, err
 }
 
-func FindAdById(adId string) ad.Ad {
-	row := db.QueryRowContext(
-		context.Background(),
-		"SELECT id, title, description, price, postedat FROM ads WHERE id = $1",
-		adId,
-	)
-
-	adFound := ad.Ad{}
-	_ = row.Scan(&adFound.Id, &adFound.Title, &adFound.Description, &adFound.Price, &adFound.Date)
-
-	return adFound
+func setUpDatabase() error {
+	err := goose.Up(Db, "../../../db/migrations")
+	if err != nil {
+		return err
+	}
+	return goose.Up(Db, "../db")
 }
