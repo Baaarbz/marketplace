@@ -26,17 +26,17 @@ func NewPostgresRepository(db *sql.DB, dbTimeout time.Duration) AdRepository {
 	}
 }
 
-func (repository *PostgresRepository) SaveAd(_ context.Context, ad Ad) (Ad, error) {
+func (repository *PostgresRepository) SaveAd(ctx context.Context, ad Ad) (Ad, error) {
 	var id, _ = uuid.NewUUID()
 	var adId, _ = NewId(id.String())
 	ad.Id = adId
 
-	_, err := repository.db.Exec(queryInsertAd, ad.Id, ad.Title, ad.Description, fmt.Sprintf("%.2f", ad.Price), ad.Date)
+	_, err := repository.db.ExecContext(ctx, queryInsertAd, ad.Id, ad.Title, ad.Description, fmt.Sprintf("%.2f", ad.Price), ad.Date)
 	return ad, err
 }
 
-func (repository *PostgresRepository) FindAdById(_ context.Context, id AdId) (Ad, error) {
-	row := repository.db.QueryRow(queryFindAdById, id)
+func (repository *PostgresRepository) FindAdById(ctx context.Context, id AdId) (Ad, error) {
+	row := repository.db.QueryRowContext(ctx, queryFindAdById, id)
 
 	ad := Ad{}
 	err := row.Scan(&ad.Id, &ad.Title, &ad.Description, &ad.Price, &ad.Date)
@@ -44,8 +44,8 @@ func (repository *PostgresRepository) FindAdById(_ context.Context, id AdId) (Ad
 	return ad, err
 }
 
-func (repository *PostgresRepository) FindAllAds(_ context.Context) (adsResponse []Ad, err error) {
-	rows, err := repository.db.Query(queryFindAllAds)
+func (repository *PostgresRepository) FindAllAds(ctx context.Context) (adsResponse []Ad, err error) {
+	rows, err := repository.db.QueryContext(ctx, queryFindAllAds)
 	if err != nil {
 		return nil, err
 	}
