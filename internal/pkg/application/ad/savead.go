@@ -42,7 +42,7 @@ func (s saveAd) Execute(ctx context.Context, request SaveAdDtoRequest) (SaveAdDt
 	} else {
 		ad := NewAd(title, description, price)
 		ad, err = s.ads.SaveAd(ctx, ad)
-		go s.findSitesWhereTheAdWasPosted(ctx, ad.Id)
+		go s.findSitesWhereTheAdWasPostedRandomly(ctx, ad.Id)
 		return SaveAdDtoResponse{Id: ad.Id.String()}, err
 	}
 }
@@ -60,7 +60,7 @@ func (saveAd) getFieldsAds(request SaveAdDtoRequest) (title Title, description D
 	return
 }
 
-func (s saveAd) findSitesWhereTheAdWasPosted(ctx context.Context, adId AdId) {
+func (s saveAd) findSitesWhereTheAdWasPostedRandomly(ctx context.Context, adId AdId) {
 	rand.NewSource(time.Now().UnixNano())
 
 	amountOfSitesPosted := rand.Intn(3)
