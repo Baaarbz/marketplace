@@ -8,6 +8,7 @@ import (
 
 type AdRepository interface {
 	SaveAd(ctx context.Context, ad Ad) (Ad, error)
+	SaveAdPostedSite(ctx context.Context, adId valueobject.AdId, site string) error
 	FindAdById(ctx context.Context, id valueobject.AdId) (Ad, error)
 	FindAllAds(ctx context.Context) (adResponse []Ad, err error)
 }

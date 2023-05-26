@@ -26,6 +26,10 @@ func (repository *InMemoryRepository) SaveAd(_ context.Context, ad Ad) (Ad, erro
 	return ad, nil
 }
 
+func (repository *InMemoryRepository) SaveAdPostedSite(_ context.Context, _ AdId, _ string) error {
+	panic("not supported operation InMemoryRepository")
+}
+
 func (repository *InMemoryRepository) FindAdById(_ context.Context, id AdId) (Ad, error) {
 	for _, ad := range repository.ads {
 		if ad.Id == id {
