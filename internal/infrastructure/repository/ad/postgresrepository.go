@@ -11,6 +11,7 @@ import (
 )
 
 const queryInsertAd = "INSERT INTO ads (id, title, description, price, postedat) VALUES ($1, $2, $3, $4, $5)"
+const queryInsertSitePostedAd = "INSERT INTO ad_posted_sites (ad_id, posted_site) VALUES ($1, $2)"
 const queryFindAdById = "SELECT id, title, description, price, postedat FROM ads WHERE id = $1"
 const queryFindAllAds = "SELECT id FROM ads"
 
@@ -33,6 +34,11 @@ func (repository *PostgresRepository) SaveAd(ctx context.Context, ad Ad) (Ad, er
 
 	_, err := repository.db.ExecContext(ctx, queryInsertAd, ad.Id, ad.Title, ad.Description, fmt.Sprintf("%.2f", ad.Price), ad.Date)
 	return ad, err
+}
+
+func (repository *PostgresRepository) SaveAdPostedSite(ctx context.Context, adId AdId, site string) error {
+	_, err := repository.db.ExecContext(ctx, queryInsertSitePostedAd, adId, site)
+	return err
 }
 
 func (repository *PostgresRepository) FindAdById(ctx context.Context, id AdId) (Ad, error) {
